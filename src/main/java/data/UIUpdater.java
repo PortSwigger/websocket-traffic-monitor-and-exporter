@@ -16,6 +16,6 @@ public class UIUpdater {
     }
     
     public void notifyMapChanged() {
-        SwingUtilities.invokeLater(() -> comboBoxModel.notifyMapChanged());
+        SwingUtilities.invokeLater(comboBoxModel::notifyMapChanged);
     }
 }

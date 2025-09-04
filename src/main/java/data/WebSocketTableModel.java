@@ -42,14 +42,14 @@ public class WebSocketTableModel extends AbstractTableModel {
         if (messages == null || row >= messages.size()) return null;
 
         MessageData msg = messages.get(row);
-        switch (column) {
-            case 0: return msg.getDirection();
-            case 1: return msg.getMessage().toString();
-            case 2: return msg.isBinary();
-            case 3: return msg.getLength();
-            case 4: return msg.getTimestamp();
-            default: return null;
-        }
+        return switch (column) {
+            case 0 -> msg.getDirection();
+            case 1 -> msg.getMessage().toString();
+            case 2 -> msg.isBinary();
+            case 3 -> msg.getLength();
+            case 4 -> msg.getTimestamp();
+            default -> null;
+        };
     }
 
     public void notifyDataChanged() {
