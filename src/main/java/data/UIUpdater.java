@@ -1,3 +1,5 @@
+package data;
+
 import javax.swing.SwingUtilities;
 
 public class UIUpdater {

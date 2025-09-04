@@ -1,3 +1,5 @@
+package data;
+
 import javax.swing.*;
 import java.util.List;
 import java.util.Map;

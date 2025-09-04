@@ -1,6 +1,10 @@
+package burp;
+
 import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.logging.Logging;
+import data.MessageData;
+import data.UIUpdater;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +15,7 @@ public class WebSocketExporter implements BurpExtension {
     
     @Override
     public void initialize(MontoyaApi montoyaApi) {
-        montoyaApi.extension().setName("Hello");
+        montoyaApi.extension().setName("WebSocket Exporter");
         Logging logging = montoyaApi.logging();
         
         Map<Object, List<MessageData>> messagesByWebSocket = new HashMap<>();

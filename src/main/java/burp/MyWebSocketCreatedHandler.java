@@ -1,8 +1,9 @@
-import burp.api.montoya.logging.Logging;
-import burp.api.montoya.websocket.WebSocketCreated;
-import burp.api.montoya.websocket.WebSocketCreatedHandler;
+package burp;
 
-import javax.swing.*;
+import burp.api.montoya.logging.Logging;
+import data.MessageData;
+import data.UIUpdater;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

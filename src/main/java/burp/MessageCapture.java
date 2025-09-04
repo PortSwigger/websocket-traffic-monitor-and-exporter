@@ -1,9 +1,10 @@
-import burp.api.montoya.core.ByteArray;
+package burp;
+
 import burp.api.montoya.logging.Logging;
 import burp.api.montoya.websocket.*;
+import data.MessageData;
+import data.UIUpdater;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

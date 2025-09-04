@@ -1,6 +1,10 @@
+package burp;
+
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.contextmenu.WebSocketContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.WebSocketMessage;
+import data.MessageData;
+import data.UIUpdater;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,3 +1,5 @@
+package data;
+
 import burp.api.montoya.core.ByteArray;
 
 public class MessageData {

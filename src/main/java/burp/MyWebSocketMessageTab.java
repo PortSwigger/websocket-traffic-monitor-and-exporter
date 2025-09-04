@@ -1,4 +1,9 @@
+package burp;
+
 import burp.api.montoya.logging.Logging;
+import data.MessageData;
+import data.WebSocketComboBoxModel;
+import data.WebSocketTableModel;
 
 import javax.swing.*;
 import java.awt.*;
