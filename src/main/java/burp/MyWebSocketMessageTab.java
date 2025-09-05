@@ -80,6 +80,9 @@ public class MyWebSocketMessageTab extends JPanel {
             File selectedFolder = fileChooser.getSelectedFile();
             String filename = JOptionPane.showInputDialog(this, "Enter filename:", "websocket_export.csv");
             if (filename == null) return;
+            if (!filename.endsWith(".csv")) {
+                filename = filename + ".csv";
+            }
             File csvFile = new File(selectedFolder, filename);
             try (FileWriter writer = new FileWriter(csvFile)) {
                 writer.write("Websocket: " + selected + "\n");
