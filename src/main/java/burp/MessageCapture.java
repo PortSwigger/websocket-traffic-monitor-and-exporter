@@ -14,13 +14,13 @@ import static burp.api.montoya.core.ByteArray.byteArray;
 public class MessageCapture implements MessageHandler {
     private final Logging logger;
     private final Map<Object, List<MessageData>> messagesByWebSocket;
-    private final WebSocket webSocket;
+    private final Object webSocketKey;
     private final UIUpdater uiUpdater;
 
-    public MessageCapture(Logging logger, Map<Object, List<MessageData>> messagesByWebSocket, WebSocket webSocket, UIUpdater uiUpdater) {
+    public MessageCapture(Logging logger, Map<Object, List<MessageData>> messagesByWebSocket, Object webSocketKey, UIUpdater uiUpdater) {
         this.logger = logger;
         this.messagesByWebSocket = messagesByWebSocket;
-        this.webSocket = webSocket;
+        this.webSocketKey = webSocketKey;
         this.uiUpdater = uiUpdater;
     }
 
@@ -33,7 +33,7 @@ public class MessageCapture implements MessageHandler {
                 new Date().toString()
         );
         
-        messagesByWebSocket.get(webSocket).add(messageData);
+        messagesByWebSocket.get(webSocketKey).add(messageData);
         uiUpdater.notifyDataChanged();
         
         logger.logToOutput("Captured text message: " + message.payload());
@@ -49,7 +49,7 @@ public class MessageCapture implements MessageHandler {
                 new Date().toString()
         );
         
-        messagesByWebSocket.get(webSocket).add(messageData);
+        messagesByWebSocket.get(webSocketKey).add(messageData);
         uiUpdater.notifyDataChanged();
         
         logger.logToOutput("Captured binary message: " + message.payload().length() + " bytes");

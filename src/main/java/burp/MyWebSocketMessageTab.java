@@ -82,6 +82,7 @@ public class MyWebSocketMessageTab extends JPanel {
             if (filename == null) return;
             File csvFile = new File(selectedFolder, filename);
             try (FileWriter writer = new FileWriter(csvFile)) {
+                writer.write("Websocket: " + selected + "\n");
                 writer.write("Direction,Message,Binary,Length,Timestamp\n");
                 for (MessageData msg : messages) {
                     writer.write(msg.getDirection() + "," +
