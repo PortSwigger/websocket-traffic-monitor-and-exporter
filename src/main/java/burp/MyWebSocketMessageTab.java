@@ -40,6 +40,7 @@ public class MyWebSocketMessageTab extends JPanel {
         tableModel = new WebSocketTableModel(messagesByWebSocket);
         
         webSocketDropdown = new JComboBox<>(comboBoxModel);
+        webSocketDropdown.setMaximumRowCount(10);
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 
