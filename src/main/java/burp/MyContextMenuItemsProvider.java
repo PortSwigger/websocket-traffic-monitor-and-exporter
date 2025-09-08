@@ -33,7 +33,7 @@ public class MyContextMenuItemsProvider implements ContextMenuItemsProvider {
                         message.payload(),
                         false,
                         message.payload().length(),
-                        new Date().toString()
+                        new Date()
                 );
                 messagesByWebSocket.get("Historical Messages").add(historicalMessage);
             }

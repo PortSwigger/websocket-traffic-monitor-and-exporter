@@ -12,14 +12,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MyWebSocketCreatedHandler implements burp.api.montoya.websocket.WebSocketCreatedHandler {
     private final Logging logging;
-    private final Map<Object, List<MessageData>> messagesByWebSocket;
+    private final Map<Object, List<MessageData>> allWebSocketsMap;
+    private final Map<Object, List<MessageData>> visibleWebSocketsMap;
     private final UIUpdater uiUpdater;
+    private final MyWebSocketMessageTab tab;
     private final AtomicInteger webSocketCounter = new AtomicInteger(1);
 
-    public MyWebSocketCreatedHandler(Logging logging, Map<Object, List<MessageData>> messagesByWebSocket, UIUpdater uiUpdater) {
+    public MyWebSocketCreatedHandler(Logging logging, Map<Object, List<MessageData>> allWebSocketsMap, Map<Object, List<MessageData>> visibleWebSocketsMap, UIUpdater uiUpdater, MyWebSocketMessageTab tab) {
         this.logging = logging;
-        this.messagesByWebSocket = messagesByWebSocket;
+        this.allWebSocketsMap = allWebSocketsMap;
+        this.visibleWebSocketsMap = visibleWebSocketsMap;
         this.uiUpdater = uiUpdater;
+        this.tab = tab;
     }
 
     @Override
@@ -27,16 +31,15 @@ public class MyWebSocketCreatedHandler implements burp.api.montoya.websocket.Web
         String url = webSocketCreated.upgradeRequest().url();
 
         WebSocketWrapper wrapper = new WebSocketWrapper(
-            webSocketCounter.getAndIncrement(),
-            url,
-            webSocketCreated.webSocket()
+                webSocketCounter.getAndIncrement(),
+                url,
+                webSocketCreated.webSocket(),
+                webSocketCreated.toolSource().toolType().toolName()
         );
-        
-        messagesByWebSocket.put(wrapper, new ArrayList<>());
-        
-        MessageCapture messageHandler = new MessageCapture(logging, messagesByWebSocket, wrapper, uiUpdater);
+
+        allWebSocketsMap.put(wrapper, new ArrayList<>());
+
+        MessageCapture messageHandler = new MessageCapture(logging, allWebSocketsMap, visibleWebSocketsMap, wrapper, uiUpdater, tab);
         webSocketCreated.webSocket().registerMessageHandler(messageHandler);
-        
-        uiUpdater.notifyMapChanged();
     }
 }

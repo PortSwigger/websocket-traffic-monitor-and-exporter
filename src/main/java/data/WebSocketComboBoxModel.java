@@ -13,7 +13,7 @@ public class WebSocketComboBoxModel extends AbstractListModel<Object> implements
     }
 
     public void notifyMapChanged() {
-        fireContentsChanged(this, 0, getSize() - 1);
+        fireContentsChanged(this, 0, Math.max(0, getSize() - 1));
     }
 
     @Override

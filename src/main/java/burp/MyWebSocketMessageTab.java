@@ -1,9 +1,13 @@
 package burp;
 
 import burp.api.montoya.logging.Logging;
+import burp.api.montoya.ui.UserInterface;
+import burp.api.montoya.ui.editor.EditorOptions;
+import burp.api.montoya.ui.editor.WebSocketMessageEditor;
 import data.MessageData;
 import data.WebSocketComboBoxModel;
 import data.WebSocketTableModel;
+import data.WebSocketWrapper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,14 +21,17 @@ import java.util.Map;
 public class MyWebSocketMessageTab extends JPanel {
     private final Map<Object, List<MessageData>> messagesByWebSocket;
     private final Logging logging;
+    private final UserInterface userInterface;
     private JComboBox<Object> webSocketDropdown;
     private WebSocketTableModel tableModel;
     private WebSocketComboBoxModel comboBoxModel;
+    private JCheckBox captureEnabledCheckBox;
 
-    public MyWebSocketMessageTab(Logging logging, Map<Object, List<MessageData>> messagesByWebSocket) {
+    public MyWebSocketMessageTab(Logging logging, UserInterface userInterface, Map<Object, List<MessageData>> messagesByWebSocket) {
         setLayout(new BorderLayout());
         this.messagesByWebSocket = messagesByWebSocket;
         this.logging = logging;
+        this.userInterface = userInterface;
         addTable();
     }
 
@@ -36,17 +43,32 @@ public class MyWebSocketMessageTab extends JPanel {
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 
-//        JButton refreshButton = new JButton("Refresh");
-//        refreshButton.addActionListener(e -> {
-//            Object currentSelection = webSocketDropdown.getSelectedItem();
-//            logging.logToOutput("Map size: " + messagesByWebSocket.size());
-//            logging.logToOutput("Map keys: " + messagesByWebSocket.keySet());
-//            webSocketDropdown.removeAllItems();
-//            for (Object ws : messagesByWebSocket.keySet()) {
-//                webSocketDropdown.addItem(ws);
-//            }
-//            webSocketDropdown.setSelectedItem(currentSelection);
-//        });
+        WebSocketMessageEditor webSocketMessageEditor = userInterface.createWebSocketMessageEditor(EditorOptions.READ_ONLY);
+
+        table.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow >= 0) {
+                    Object currentWebSocket = webSocketDropdown.getSelectedItem();
+                    if (currentWebSocket != null) {
+                        List<MessageData> messages = messagesByWebSocket.get(currentWebSocket);
+                        if (messages != null && selectedRow < messages.size()) {
+                            MessageData selectedMessage = messages.get(selectedRow);
+                            webSocketMessageEditor.setContents(selectedMessage.getMessage());
+                        }
+                    }
+                }
+            }
+        });
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, webSocketMessageEditor.uiComponent());
+        splitPane.setResizeWeight(0.6);
+
+        captureEnabledCheckBox = new JCheckBox("Enable Message Capture", true);
+        captureEnabledCheckBox.addActionListener(e -> {
+            comboBoxModel.notifyMapChanged();
+        });
+
 
         JButton exportButton = new JButton("Export to CSV");
         exportButton.addActionListener(e -> exportToCSV());
@@ -57,12 +79,12 @@ public class MyWebSocketMessageTab extends JPanel {
         });
 
         JPanel topPanel = new JPanel(new FlowLayout());
-//        topPanel.add(refreshButton);
+        topPanel.add(captureEnabledCheckBox);
         topPanel.add(webSocketDropdown);
         topPanel.add(exportButton);
 
         add(topPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(splitPane, BorderLayout.CENTER);
     }
 
 
@@ -78,7 +100,9 @@ public class MyWebSocketMessageTab extends JPanel {
 
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File selectedFolder = fileChooser.getSelectedFile();
-            String filename = JOptionPane.showInputDialog(this, "Enter filename:", "websocket_export.csv");
+            String defaultFilename = (selected instanceof WebSocketWrapper) ? 
+                                  ((WebSocketWrapper) selected).getCsvFilename() + ".csv" : "websocket_export.csv";
+            String filename = JOptionPane.showInputDialog(this, "Enter filename:", defaultFilename);
             if (filename == null) return;
             if (!filename.endsWith(".csv")) {
                 filename = filename + ".csv";
@@ -107,6 +131,10 @@ public class MyWebSocketMessageTab extends JPanel {
 
     public WebSocketTableModel getTableModel() {
         return tableModel;
+    }
+
+    public boolean isCaptureEnabled() {
+        return captureEnabledCheckBox.isSelected();
     }
 
     public WebSocketComboBoxModel getComboBoxModel() {

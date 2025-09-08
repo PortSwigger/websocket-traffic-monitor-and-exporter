@@ -12,20 +12,23 @@ import java.util.List;
 import java.util.Map;
 
 public class WebSocketExporter implements BurpExtension {
+
     
     @Override
     public void initialize(MontoyaApi montoyaApi) {
         montoyaApi.extension().setName("WebSocket Exporter");
         Logging logging = montoyaApi.logging();
         
-        Map<Object, List<MessageData>> messagesByWebSocket = new HashMap<>();
-        messagesByWebSocket.put("Historical Messages", new ArrayList<>());
+        Map<Object, List<MessageData>> allWebSocketsMap = new HashMap<>();
         
-        MyWebSocketMessageTab tab = new MyWebSocketMessageTab(logging, messagesByWebSocket);
+        Map<Object, List<MessageData>> visibleWebSocketsMap = new HashMap<>();
+        visibleWebSocketsMap.put("Historical Messages", new ArrayList<>());
+        
+        MyWebSocketMessageTab tab = new MyWebSocketMessageTab(logging, montoyaApi.userInterface(), visibleWebSocketsMap);
         UIUpdater uiUpdater = new UIUpdater(tab.getTableModel(), tab.getComboBoxModel());
         
-        MyWebSocketCreatedHandler handler = new MyWebSocketCreatedHandler(logging, messagesByWebSocket, uiUpdater);
-        MyContextMenuItemsProvider contextMenu = new MyContextMenuItemsProvider(messagesByWebSocket, uiUpdater);
+        MyWebSocketCreatedHandler handler = new MyWebSocketCreatedHandler(logging, allWebSocketsMap, visibleWebSocketsMap, uiUpdater, tab);
+        MyContextMenuItemsProvider contextMenu = new MyContextMenuItemsProvider(visibleWebSocketsMap, uiUpdater);
         
         montoyaApi.userInterface().registerSuiteTab("WebSocketMessages", tab);
         montoyaApi.websockets().registerWebSocketCreatedHandler(handler);
