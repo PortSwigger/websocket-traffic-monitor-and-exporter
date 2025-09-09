@@ -8,6 +8,7 @@ import data.MessageData;
 import data.WebSocketComboBoxModel;
 import data.WebSocketTableModel;
 import data.WebSocketWrapper;
+import utils.Utilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,9 +67,7 @@ public class MyWebSocketMessageTab extends JPanel {
         splitPane.setResizeWeight(0.6);
 
         captureEnabledCheckBox = new JCheckBox("Enable Message Capture", true);
-        captureEnabledCheckBox.addActionListener(e -> {
-            comboBoxModel.notifyMapChanged();
-        });
+        captureEnabledCheckBox.addActionListener(e -> comboBoxModel.notifyMapChanged());
 
 
         JButton exportButton = new JButton("Export to CSV");
@@ -112,22 +111,20 @@ public class MyWebSocketMessageTab extends JPanel {
             try (FileWriter writer = new FileWriter(csvFile)) {
                 writer.write("Websocket: " + selected + "\n");
                 writer.write("Direction,Message,Binary,Length,Timestamp\n");
-                for (MessageData msg : messages) {
-                    writer.write(msg.getDirection() + "," +
-                            msg.getMessage().toString() + "," +
-                            msg.isBinary() + "," +
-                            msg.getLength() + "," +
-                            msg.getTimestamp() + "\n");
+                if (messages != null) {
+                    for (MessageData msg : messages) {
+                        String processedMessage = Utilities.escapeString(msg.getMessage().toString());
+                        writer.write(msg.getDirection() + "," +
+                                processedMessage + "," +
+                                msg.isBinary() + "," +
+                                msg.getLength() + "," +
+                                msg.getTimestamp() + "\n");
+                    }
                 }
             } catch (IOException e) {
                 logging.logToError("Export failed: " + e.getMessage());
             }
         }
-    }
-
-
-    public JComboBox<Object> getWebSocketDropdown() {
-        return webSocketDropdown;
     }
 
     public WebSocketTableModel getTableModel() {

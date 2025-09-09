@@ -41,6 +41,7 @@ public class MyContextMenuItemsProvider implements ContextMenuItemsProvider {
             uiUpdater.notifyDataChanged();
             uiUpdater.notifyMapChanged();
         });
+
         return List.of(menuItem);
     }
 }

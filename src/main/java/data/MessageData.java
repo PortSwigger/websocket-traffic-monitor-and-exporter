@@ -18,18 +18,20 @@ public class MessageData {
         this.isBinary = isBinary;
         this.length = length;
         this.timestamp = timestamp;
-
     }
 
     public String getDirection() {
         return direction;
     }
+
     public ByteArray getMessage() {
         return message;
     }
+
     public boolean isBinary() {
         return isBinary;
     }
+
     public int getLength() {
         return length;
     }
