@@ -1,30 +1,64 @@
-<p>WebSocket Traffic Monitor &amp; Exporter is a comprehensive Burp Suite extension for real-time monitoring, capturing, and exporting WebSocket traffic across all of the Burp tools.</p>
+<p>WebSocket Traffic Monitor &amp; Exporter is a comprehensive extension for real-time monitoring, capturing, and
+    exporting WebSocket traffic across all Burp tools. It provides tool source
+    tracking, numbered connection organization, and CSV export capabilities through a user-friendly
+    interface.</p>
 
 <h2>Features</h2>
 
-<p><strong>Real-time WebSocket Monitoring</strong>:
-This feature can capture WebSocket messages from all Burp tools, including Proxy, Repeater, Scanner, Intruder, and more. It features real-time display of incoming and outgoing messages and supports both text and binary message types. The capture control is intelligent, with the provision of an enable/disable toggle.</p>
+<ul>
+    <li><strong>Real-time WebSocket Monitoring</strong>:
+        Captures WebSocket messages from all Burp tools including Proxy, Repeater, Scanner, and Intruder. Displays
+        incoming
+        and outgoing messages in real-time with support for both text and binary message types. Features intelligent
+        capture
+        control with enable/disable toggle functionality.</li>
 
-<p><strong>Smart Message Management</strong>:
-This feature allows for tool source tracking, in order to see which Burp tool each WebSocket originated from. Each connection gets a unique ID for easy identification, courtesy of numbered WebSocket organization. It can filter to show only the WebSockets that have received messages and supports integration with a right-click context menu for historical messages.</p>
+    <li><strong>Message Management</strong>:
+        Tracks which Burp tool each WebSocket originated from and assigns unique IDs to each connection for easy
+        identification. Only displays WebSockets that have actually received messages and provides context menu
+        integration
+        for sending historical messages to the monitoring tab.</li>
 
-<p><strong>User-Friendly Interface</strong>:
-The interface features a split-pane layout with a message table on the left and a payload viewer on the right. The dropdown is scrollable and organized by the newest connections first. Click on any message row to view the full payload. The user interface is responsive and updates in real-time as more messages flow in.</p>
+    <li><strong>User-Friendly Interface</strong>:
+        Split-pane layout with message table on the left and payload viewer on the right. Scrollable dropdown organized
+        by
+        newest connections first with responsive real-time updates. Click any message row to view the full payload
+        content.
+    </li>
 
-<p><strong>Advanced CSV Export</strong>:
-This feature auto-suggests a filename in the <code class=\InlineCode\>ID-URL-TOOL.csv</code> format. It exports complete message data, including direction, content, type, length, and timestamps. The timestamps are consistent with the standard format used in Burp. It also automatically escapes special characters to make the content CSV-safe.</p>
+    <li><strong>CSV Export</strong>:
+        Auto-suggests filenames in <code class="InlineCode">ID-URL-TOOL.csv</code> format with complete message data
+        including direction, content, binary status, length, and Burp-consistent timestamps.</li>
+</ul>
 
 <h2>Usage</h2>
 
-<p><strong>Basic Monitoring</strong>:
-Navigate to the \WebSocket Messages\ tab and ensure \Enable Message Capture\ is checked. Use any Burp tool to interact with WebSocket endpoints. The messages will then appear automatically in the table. </p>
+<h3>Basic Monitoring</h3>
+<ol>
+    <li>Navigate to the "WebSocket Messages" tab</li>
+    <li>Ensure "Enable Message Capture" is checked</li>
+    <li>Use any Burp tool to interact with WebSocket endpoints</li>
+    <li>Messages appear automatically in the table as they flow</li>
+</ol>
 
-<p><strong>Dropdown Format</strong>:
-WebSockets appear in the following format: <code class=\InlineCode\>ID. URL - TOOL</code>. For example, <code class=\InlineCode\>1. wss://example.com/ws - Burp Proxy</code>. Historical Messages (from the context menu) appear at the top, while the newest WebSockets appear first (in reverse chronological order).</p>
+<h3>Message Export</h3>
+<ol>
+    <li>Select a WebSocket from the dropdown menu</li>
+    <li>Click "Export to CSV" button</li>
+    <li>Choose destination folder in the file dialog</li>
+    <li>Enter filename (defaults to <code class="InlineCode">ID-URL-TOOL.csv</code> format)</li>
+    <li>CSV includes direction, message content, binary flag, length, and timestamp</li>
+</ol>
 
+<h3>Capture Control</h3>
+<ul>
+    <li>Toggle message capture on/off without losing existing data.</li>
+    <li>WebSockets opened while capture is disabled are tracked
+        in the background but not displayed.</li>
+    <li>Re-enabling capture shows new traffic from previously opened connections,
+        providing flexible monitoring control.</li>
+</ul>
 
-<p><strong>Message Export</strong>:
-To export a message, select a WebSocket from the dropdown and click on \Export to CSV\. Choose your destination folder, and the default filename will appear in the format <code class=\InlineCode\>1-wss___example.com_ws-Burp_Proxy.csv</code>. The CSV will include the direction, message data, whether its binary, the length, and timestamp.</p>
-
-<p><strong>Capture Control</strong>:
-Toggle message capture without losing existing data. The feature also includes background tracking where WebSockets opened while disabled are tracked but not shown. Re-enabling capture shows new traffic from previously opened connections.</p>
+<h3>Context Menu Integration</h3>
+<p>Right-click on WebSocket messages in other Burp tools to send them to the "WebSocket Messages" tab under "Historical
+    Messages" for centralized analysis and export.</p>

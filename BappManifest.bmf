@@ -6,8 +6,8 @@ ScreenVersion: 1.0.0
 SerialVersion: 1
 MinPlatformVersion: 24
 ProOnly: False
-Author: ErinnaA
-ShortDescription: This extension captures and exports WebSocket traffic, offers real-time monitoring, smart filtering, tool tracking, and exports data to CSV files with a user-friendly interface.
+Author: Erinna Anthony, PortSwigger
+ShortDescription: Monitors and logs WebSocket traffic with built-in CSV export functionality.
 EntryPoint: basicExtension-1.0-SNAPSHOT.jar
 BuildCommand: ./gradlew build test
 SupportedProducts: Pro, Community
